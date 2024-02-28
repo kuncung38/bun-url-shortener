@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="../public/favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.10"
+    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+    crossorigin="anonymous"></script>
+  <title>Kuncung URL Shortener</title>
+</head>
+
+<body class="flex flex-col items-center">
+  <nav class="navbar bg-base-100">
+    <a class="text-xl normal-case btn btn-ghost">Kuncu.ng</a>
+  </nav>
+
+  <main>
+    <section class="flex flex-col gap-5 mt-32">
+      <h1 class="text-6xl font-extrabold">Imma shorten your long links 😏</h1>
+      <p class="text-base text-center">This.. thing here is an easy-to-use URL shortening service which was made just
+        for fun
+      </p>
+
+      <div class="relative flex items-center mt-6">
+        <span class="absolute p-5">
+          <img width="26" height="19" class="text-[#c9ced6]" src="https://simpleicon.com/wp-content/uploads/link-2.svg"
+            alt="url.svg" />
+        </span>
+
+        <form class="w-full" hx-post="/shorten" hx-swap="outerHTML" hx-target="#result">
+          <input name="url" required type="text" placeholder="Enter the link here"
+            class="input pl-14 h-[58px] rounded-full w-full input-bordered">
+
+          <button class="btn mt-1 bg-blue-600 font-semibold rounded-[48px] absolute text-white right-1 capitalize">
+            Shorten Plz!
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="results"></section>
+  </main>
+
+</body>
+
+</html>

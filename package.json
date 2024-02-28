@@ -1,0 +1,19 @@
+{
+  "name": "bun-url-shortener",
+  "version": "1.0.50",
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build src/index.ts",
+    "start": "NODE_ENV=production bun src/index.ts"
+  },
+  "dependencies": {
+    "@elysiajs/html": "^0.8.0",
+    "@elysiajs/static": "^0.8.1",
+    "@elysiajs/swagger": "^0.8.5",
+    "elysia": "latest"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "module": "src/index.js"
+}
