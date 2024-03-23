@@ -57,7 +57,7 @@ app.post(
       });
     }
 
-    const redirect = `${Bun.env.HOST_URL}/${existingUrlId ?? urlId}`;
+    const redirect = `${Bun.env.HOST_URL}/${existingUrlId?.urlId ?? urlId}`;
 
     return generateHTML(redirect);
   },
