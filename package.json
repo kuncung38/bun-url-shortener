@@ -1,9 +1,10 @@
 {
   "name": "bun-url-shortener",
   "version": "1.0.50",
+  "main": "src/index.ts",
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "build": "bun build src/index.ts",
+    "build": "bun build src/index.ts --target bun",
     "start": "NODE_ENV=production bun src/index.ts",
     "migrate": "bun src/db/migrate.ts"
   },
@@ -17,8 +18,9 @@
     "nanoid": "^5.0.6"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "latest",
     "bun-types": "latest",
     "drizzle-kit": "^0.20.14"
   },
-  "module": "src/index.js"
+  "module": "src/index.ts"
 }

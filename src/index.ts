@@ -1,4 +1,4 @@
-import { Elysia, NotFoundError, ValidationError, error, t } from 'elysia';
+import { Elysia, error, t } from 'elysia';
 import { staticPlugin } from '@elysiajs/static';
 import { html } from '@elysiajs/html';
 import { swagger } from '@elysiajs/swagger';
@@ -57,9 +57,7 @@ app.post(
       });
     }
 
-    const redirect = `http://${app.server?.hostname}:${app.server?.port}/${
-      existingUrlId ?? urlId
-    }`;
+    const redirect = `http://${Bun.env.HOST_URL}/${existingUrlId ?? urlId}`;
 
     return generateHTML(redirect);
   },
