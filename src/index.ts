@@ -1,7 +1,13 @@
-import { Elysia, t } from 'elysia';
+import { Elysia, NotFoundError, ValidationError, error, t } from 'elysia';
 import { staticPlugin } from '@elysiajs/static';
 import { html } from '@elysiajs/html';
 import { swagger } from '@elysiajs/swagger';
+import { nanoid } from 'nanoid';
+import { db } from './db';
+import { shortener } from './db/schema';
+import { validateUrl } from './helper/url';
+import { generateHTML } from './helper';
+import { eq } from 'drizzle-orm';
 
 const app = new Elysia();
 
@@ -13,14 +19,55 @@ app.get('/', () => {
   return new Response(Bun.file('./src/index.html'));
 });
 
+app.get('/:id', async ({ params: { id }, set }) => {
+  const url = await db
+    .select({ url: shortener.url })
+    .from(shortener)
+    .where(eq(shortener.urlId, id))
+    .get();
+
+  if (!url) {
+    return error('Bad Request', { statusCode: 404, message: 'URL not found' });
+  }
+
+  set.redirect = url.url;
+});
+
 app.post(
   '/shorten',
-  ({ body }) => {
-    return 'Shorten Url';
+  async ({ body: { url } }) => {
+    if (!validateUrl(url)) {
+      return error('Bad Request', {
+        statusCode: 400,
+        message: 'Please give me valid URL',
+      });
+    }
+
+    const existingUrlId = await db
+      .select({ urlId: shortener.urlId })
+      .from(shortener)
+      .where(eq(shortener.url, url))
+      .get();
+
+    const urlId = nanoid(7);
+    if (!existingUrlId) {
+      await db.insert(shortener).values({
+        url,
+        urlId,
+      });
+    }
+
+    const redirect = `http://${app.server?.hostname}:${app.server?.port}/${
+      existingUrlId ?? urlId
+    }`;
+
+    return generateHTML(redirect);
   },
   {
     body: t.Object({
-      url: t.String(),
+      url: t.String({
+        default: 'https://www.example.com',
+      }),
     }),
   }
 );
